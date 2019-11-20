@@ -82,23 +82,23 @@ public class TimeServiceImpl implements TimeService{
 		
 		Integer tempMilisecond = 0;
 		
-		tempMilisecond.parseInt(miliSeconds);
+		Integer tempSecond = 0;
 		
+		tempMilisecond.parseInt(miliSeconds);
+		//Check if miliseconds are higher to 499 in order to change the seconds (+1)
 		if(tempMilisecond > 499) {
 			
-		}
-		
-		if(miliSeconds.startsWith("5")) {
-			
-			seconds = seconds +1;
-			
+			tempSecond.parseInt(miliSeconds);
+			tempSecond =+ 1;
+			seconds = tempSecond.toString();
+
 		}
 		
 		//Final time variable
 		
 		String timeFinalFormat = minutes +":"+ seconds;
 		
-		//Final variable para periodo
+		//Final variable period
 		
 		String finalPeriod = "";
 		
