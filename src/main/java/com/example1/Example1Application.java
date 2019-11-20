@@ -23,7 +23,12 @@ public class Example1Application {
         @Autowired
         private TimeService myService;
         
-        private String param = "[H1] 0:15.025";
+        //Here we define the given parameter to the method
+        private String param = "[H1] 46:15.525";
+        
+        private String param2 = "[H1] -46:15.525";
+        
+        private String param3 = "aaaa";
 
         @Override
         public void run(String...args) throws Exception {

@@ -29,16 +29,13 @@ public class TimeServiceImpl implements TimeService{
 			
 		}
 		
-		String period = str.substring(0,  4);
+		//First check...
 		
-		if (true == correctPeriod) {
-			
-			System.out.println("Correct period given: " + period);
-
-		}else {
-			System.out.println("Invalid");
+		if (correctPeriod == false) {
 			return "Invalid";
 		}
+		
+		String period = str.substring(0,  4);
 		
 		//Second part of the time (Minutes and seconds)
 		
@@ -56,6 +53,23 @@ public class TimeServiceImpl implements TimeService{
 			System.out.println(e);
 		}
 		
+		//We check if the time value is valid:
+		
+		//THIS CHECK (Number between 0-9) makes crash the tests
+//		String firstValue = str.substring(5, 1);
+		
+//		Integer check = 0;
+//		Integer checkValidMinute = check.parseInt(firstValue);
+		
+//		if( checkValidMinute >= 0 && checkValidMinute <= 9) {
+//			
+//			correctTime = true;
+//		}
+		
+		if( !str.substring(5).startsWith("-")) {
+			
+			correctTime = true;
+		}
 
 		
 		//minutes formating
@@ -84,19 +98,48 @@ public class TimeServiceImpl implements TimeService{
 		
 		Integer tempSecond = 0;
 		
-		tempMilisecond.parseInt(miliSeconds);
+		Integer temp = tempMilisecond.parseInt(miliSeconds);
+				
 		//Check if miliseconds are higher to 499 in order to change the seconds (+1)
-		if(tempMilisecond > 499) {
+		
+		if(temp > 499) {
 			
-			tempSecond.parseInt(miliSeconds);
-			tempSecond =+ 1;
-			seconds = tempSecond.toString();
+			Integer tempSec = tempSecond.parseInt(seconds);
+			tempSec = tempSec + 1;
+			seconds = tempSec.toString();
 
 		}
 		
 		//Final time variable
-		
+
 		String timeFinalFormat = minutes +":"+ seconds;
+		
+		//Calculate extra time:
+		
+		Integer tempMin = 0;
+		Integer tempMinutes = tempMin.parseInt(minutes);
+		Integer extraTime = 0;
+		String extraTimeStr = "";
+	
+		//If there's extra time, we change the format:
+		if(tempMinutes > 45) {
+			
+			timeFinalFormat = "45";
+			
+			extraTime = tempMinutes - 45;
+			
+			extraTimeStr = extraTime.toString();
+			
+			extraTimeStr = extraTimeStr +":"+ seconds;
+		}		
+
+		
+		//We detect extra time, if it exists, we set it into the time var.
+		if(!extraTimeStr.contentEquals("")) {
+			
+			timeFinalFormat = timeFinalFormat +" +"+extraTimeStr;
+
+		}
 		
 		//Final variable period
 		
@@ -118,37 +161,16 @@ public class TimeServiceImpl implements TimeService{
 			finalPeriod = null;
 		}
 		
-		
-		//Use \\ if . doesn't work
-		// String example = time.split("\\.")[1];
-		
-		//EXAMPLES:
-		
-		String example1 ="[PM] 0:00.000";
-		// output1: "00:00 – PRE_MATCH" 
-		String example2 ="[H1] 0:15.025";
-		// Output2: "00:15 – FIRST_HALF"
-		String example3 = "[H1] 3:07.513";
-		//Output3: "03:08 – FIRST_HALF" 
-		String example4 = "[H1] 45:00.001";
-		// Output 4: "45:00 +00:00 – FIRST_HALF" 
-		String example5 = "[H1] 46:15.752";
-		//Output 5: "45:00 +01:16 – FIRST_HALF" 
-		String example6 = "[HT] 45:00.000";
-		//Output 6: "45:00 – HALF_TIME" 
-		String example7 = "[H2] 45:00.500";
-		// Output 7: "45:01 – SECOND_HALF" 
-		String example8 = "[H2] 90:00.908";
-		// Output8: "90:00 +00:01 – SECOND_HALF"
-		String example9 = "[FT] 90:00.000";
-		//Output 9: "90:00 +00:00 – FULL_TIME" 
-		String invalid1 = "90:00";
-		//Output invalid1:  “INVALID”
-		String invalid2 = "[H3] 90:00.000";
-		String invalid3 = "[PM] -10:00.000";
-		
+	
+		//Check the boolean parameters which confirmed the correct values
+		if (correctTime && correctPeriod) {
+			
+			return timeFinalFormat+" - "+finalPeriod;
 
-		return timeFinalFormat+" - "+finalPeriod;
+		}else {
+			
+			return "Invalid";
+		}
 	}
 
 
