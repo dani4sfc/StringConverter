@@ -14,6 +14,7 @@ public class TimeServiceImpl implements TimeService{
 	boolean correctTime = false;
 	
 	//We implement here the method and develop it
+	@SuppressWarnings("static-access")
 	public String TimeConverter(String str) {
 		
 		//First part of the time (PERIOD)
@@ -75,6 +76,16 @@ public class TimeServiceImpl implements TimeService{
 			
 		} catch (Exception e) {
 			System.out.println(e);
+		}
+		
+		//Parse string to integer in order to compare
+		
+		Integer tempMilisecond = 0;
+		
+		tempMilisecond.parseInt(miliSeconds);
+		
+		if(tempMilisecond > 499) {
+			
 		}
 		
 		if(miliSeconds.startsWith("5")) {
